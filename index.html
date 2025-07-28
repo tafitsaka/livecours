@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physique-Chimie Master - Plateforme d'Apprentissage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-blue: #2A2F4F;
+            --accent-orange: #FF7F50;
+            --soft-gray: #F8F9FA;
+            --deep-space: #1A1A2E;
+            --gradient-1: linear-gradient(135deg, #2A2F4F 0%, #1A1A2E 100%);
+            --success-green: #2ecc71;
+            --error-red: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--soft-gray);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            background: var(--gradient-1);
+            padding: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-orange);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-orange);
+        }
+
+        .nav-links a.nav-active {
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .nav-links a.nav-active::before {
+            width: 100%;
+            opacity: 1;
+        }
+
+        .live-btn {
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 1.5s infinite;
+        }
+
+        .live-btn::before {
+            content: '🔴';
+            filter: brightness(1.5);
+        }
+
+        .live-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,127,80,0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .live-schedule {
+            background: rgba(42,47,79,0.95);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-schedule::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+            pointer-events: none;
+        }
+
+        .live-schedule h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .live-schedule ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-weight: 300;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 8rem 2rem 6rem;
+            background: linear-gradient(rgba(42,47,79,0.85), rgba(26,26,46,0.85)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232a2f4f"/><path d="M20,20 Q40,5 60,20 T100,20 Q85,40 100,60 T100,100 Q60,85 20,100 T0,100 Q5,60 0,20 T20,20" fill="%231a1a2e" opacity="0.5"/></svg>') center/cover no-repeat;
+            position: relative;
+            color: white;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            opacity: 0.9;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255,127,80,0.1) 100%);
+            transform: rotate(45deg);
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            animation: shine 1.5s;
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+
+        .feature-card h2 {
+            color: var(--main-blue);
+            margin-bottom: 1.2rem;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            background: var(--gradient-1);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: auto;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .live-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .video-container {
+            background: #1a1a2e;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        }
+
+        .teams-embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .live-info {
+            padding: 1.5rem;
+            background: #2c3e50;
+            color: white;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .schedule-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .schedule-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .schedule-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .schedule-list span {
+            font-weight: 600;
+            color: var(--main-blue);
+        }
+
+        .chat-box {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            padding: 1.5rem;
+            border-radius: 15px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin: 1rem 0;
+            padding-right: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            background: rgba(255,127,80,0.05);
+            padding: 0.8rem;
+            border-radius: 8px;
+        }
+
+        .user {
+            color: var(--accent-orange);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .chat-input button {
+            background: linear-gradient(to right, #FF7F50, #FF6347);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255,99,71,0.3);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .form-header h2 {
+            color: var(--main-blue);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .appointment-form {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: var(--main-blue);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-orange);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255,127,80,0.2);
+        }
+
+        select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232a2f4f"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 1rem center/15px;
+        }
+
+        .submit-btn {
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,127,80,0.3);
+        }
+
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .contact-details {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,127,80,0.05);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .availability {
+            border-top: 2px solid #eee;
+            padding-top: 1.5rem;
+        }
+
+        .availability h4 {
+            color: var(--main-blue);
+            margin-bottom: 1rem;
+        }
+
+        .availability ul {
+            list-style: none;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Messages de confirmation */
+        .confirmation {
+            background: var(--success-green);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem auto;
+            max-width: 600px;
+            text-align: center;
+            display: none;
+        }
+
+        .error {
+            background: var(--error-red);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                padding: 4rem 1rem;
+            }
+
+            .live-container, .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .info-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .live-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 6rem 1rem 4rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .video-wrapper {
+                height: 250px;
+            }
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active-page {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#live" class="live-btn" id="live-btn">Rejoindre le cours en live</a>
+            <ul class="nav-links">
+                <li><a href="#index" class="nav-link nav-active">Accueil</a></li>
+                <li><a href="#contact" class="nav-link">Prendre rendez-vous</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page d'accueil -->
+    <section id="index" class="page active-page">
+        <div class="live-schedule">
+            <h3>Horaires des cours en direct</h3>
+            <ul>
+                <li>Lundi - Vendredi</li>
+                <li>18h30 - 19h45</li>
+            </ul>
+        </div>
+
+        <div class="container">
+            <section class="hero">
+                <h1>Bienvenue en Physique-Chimie</h1>
+                <p>Maîtrisez les concepts fondamentaux avec nos cours interactifs et exercices pratiques</p>
+            </section>
+
+            <section class="features">
+                <div class="feature-card">
+                    <h2>Cours complets</h2>
+                    <p>Leçons détaillées avec animations 3D et expériences virtuelles</p>
+                </div>
+                <div class="feature-card">
+                    <h2>Exercices corrigés</h2>
+                    <p>Plus de 500 problèmes classés par difficulté avec solutions expliquées</p>
+                </div>
+                <div class="feature-card">
+                    <h2>Révisions intelligentes</h2>
+                    <p>Des quiz personnalisés pour optimiser votre apprentissage</p>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- Page Live -->
+    <section id="live" class="page">
+        <main class="container live-container">
+            <section class="video-container">
+                <div class="video-wrapper">
+                    <iframe 
+                        src="https://teams.microsoft.com/_#/pre-join-calling/..." 
+                        allow="camera; microphone; fullscreen; display-capture"
+                        class="teams-embed">
+                    </iframe>
+                </div>
+                
+                <div class="live-info">
+                    <h2>Cours en Direct - Thermodynamique</h2>
+                    <div class="timer">
+                        <span>🕒 18:30 - 19:45</span>
+                        <span>Durée restante: 1h15</span>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="live-sidebar">
+                <div class="schedule-box">
+                    <h3>Emploi du temps des Lives</h3>
+                    <ul class="schedule-list">
+                        <li><span>Lundi</span>Mécanique des fluides</li>
+                        <li><span>Mardi</span>Chimie organique</li>
+                        <li><span>Mercredi</span>Physique quantique</li>
+                        <li><span>Jeudi</span>Électrochimie</li>
+                        <li><span>Vendredi</span>Révisions</li>
+                    </ul>
+                </div>
+
+                <div class="chat-box">
+                    <h3>Chat en Direct</h3>
+                    <div class="chat-messages">
+                        <div class="message">
+                            <span class="user">Prof:</span> 
+                            <p>Bienvenue à tous ! Prêts pour le cours ?</p>
+                        </div>
+                        <div class="message">
+                            <span class="user">Marie:</span> 
+                            <p>Bonjour professeur, je suis prête !</p>
+                        </div>
+                        <div class="message">
+                            <span class="user">Thomas:</span> 
+                            <p>J'ai une question sur le dernier exercice</p>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Écrivez votre message...">
+                        <button>Envoyer</button>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </section>
+
+    <!-- Page Contact -->
+    <section id="contact" class="page">
+        <div class="hero">
+            <h1>Prendre rendez-vous</h1>
+            <p>Planifiez une session personnalisée avec notre professeur</p>
+        </div>
+
+        <div class="contact-container">
+            <div>
+                <div class="form-header">
+                    <h2>Réservez votre session</h2>
+                    <p>Remplissez le formulaire pour prendre rendez-vous</p>
+                </div>
+                
+                <div class="appointment-form">
+                    <!-- Formulaire avec Formspree -->
+                    <form id="rdv-form" action="https://formspree.io/f/mbjndqkg" method="POST">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Nom complet</label>
+                                <input type="text" id="name" name="name" required>
+                                <div class="error" id="name-error">Veuillez entrer votre nom</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                                <div class="error" id="email-error">Veuillez entrer un email valide</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Téléphone</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Sujet</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Sélectionnez un sujet</option>
+                                    <option value="physique">Physique</option>
+                                    <option value="chimie">Chimie</option>
+                                    <option value="revision">Révision d'examen</option>
+                                    <option value="projet">Projet scientifique</option>
+                                </select>
+                                <div class="error" id="subject-error">Veuillez sélectionner un sujet</div>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="date">Date souhaitée</label>
+                                <input type="date" id="date" name="date" required>
+                                <div class="error" id="date-error">Veuillez sélectionner une date</div>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="message">Détails supplémentaires</label>
+                                <textarea id="message" name="message" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn">Réserver maintenant</button>
+                    </form>
+                    
+                    <div class="confirmation" id="confirmation">
+                        <h3>Merci pour votre demande !</h3>
+                        <p>Votre rendez-vous a été enregistré avec succès. Notre équipe vous contactera dans les plus brefs délais pour confirmer.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="info-card">
+                    <h3>Informations de contact</h3>
+                    <ul class="contact-details">
+                        <li>
+                            <span>📧</span>
+                            <span>contact@physique-chimie.fr</span>
+                        </li>
+                        <li>
+                            <span>📞</span>
+                            <span>+33 1 23 45 67 89</span>
+                        </li>
+                        <li>
+                            <span>📍</span>
+                            <span>123 Avenue des Sciences, Paris</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="availability">
+                        <h4>Disponibilités</h4>
+                        <ul>
+                            <li>Lundi - Vendredi: 9h-12h, 14h-19h</li>
+                            <li>Samedi: 10h-15h</li>
+                            <li>Dimanche: Fermé</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 Physique-Chimie Master - Tous droits réservés</p>
+    </footer>
+
+    <script>
+        // Navigation entre les pages
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Mettre à jour la classe active
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-active'));
+                this.classList.add('nav-active');
+                
+                // Mettre à jour le bouton live
+                if(this.getAttribute('href') === '#live') {
+                    document.getElementById('live-btn').textContent = 'En direct maintenant 🔴';
+                } else {
+                    document.getElementById('live-btn').textContent = 'Rejoindre le cours en live';
+                }
+                
+                // Afficher la page correspondante
+                const targetPage = this.getAttribute('href').substring(1);
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active-page');
+                });
+                document.getElementById(targetPage).classList.add('active-page');
+            });
+        });
+
+        // Gestion du bouton live
+        document.getElementById('live-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Mettre à jour la navigation
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('nav-active'));
+            document.querySelector('[href="#live"]').classList.add('nav-active');
+            
+            // Mettre à jour le texte du bouton
+            this.textContent = 'En direct maintenant 🔴';
+            
+            // Afficher la page live
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            document.getElementById('live').classList.add('active-page');
+        });
+
+        // Gestion du formulaire de rendez-vous
+        document.getElementById('rdv-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Réinitialiser les erreurs
+            document.querySelectorAll('.error').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Validation des champs
+            let isValid = true;
+            
+            const name = document.getElementById('name').value;
+            if (!name) {
+                document.getElementById('name-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            const email = document.getElementById('email').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                document.getElementById('email-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            const subject = document.getElementById('subject').value;
+            if (!subject) {
+                document.getElementById('subject-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            const date = document.getElementById('date').value;
+            if (!date) {
+                document.getElementById('date-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            // Récupérer les données du formulaire
+            const formData = {
+                name: name,
+                email: email,
+                phone: document.getElementById('phone').value,
+                subject: subject,
+                date: date,
+                message: document.getElementById('message').value
+            };
+            
+            // Envoyer les données à Formspree
+            fetch('https://formspree.io/f/mbjndqkg', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Afficher le message de confirmation
+                    document.getElementById('confirmation').style.display = 'block';
+                    document.getElementById('rdv-form').reset();
+                } else {
+                    alert("Une erreur s'est produite. Veuillez réessayer.");
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert("Erreur réseau. Veuillez réessayer.");
+            });
+        });
+
+        // Gestion du chat en direct
+        document.querySelector('.chat-input button').addEventListener('click', function() {
+            const input = document.querySelector('.chat-input input');
+            const message = input.value.trim();
+            
+            if(message) {
+                const messagesContainer = document.querySelector('.chat-messages');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message';
+                newMessage.innerHTML = `
+                    <span class="user">Vous:</span> 
+                    <p>${message}</p>
+                `;
+                messagesContainer.appendChild(newMessage);
+                
+                // Faire défiler vers le bas
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Réinitialiser l'input
+                input.value = '';
+            }
+        });
+        
+        // Permettre d'envoyer le message avec la touche Entrée
+        document.querySelector('.chat-input input').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                document.querySelector('.chat-input button').click();
+            }
+        });
+    </script>
+</body>
+</html>
